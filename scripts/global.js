@@ -139,7 +139,7 @@ function displayDialogue(talker, speech, alt = false, role) {
     if (alt) alttext = " alt";
     DISPLAY.innerHTML += `
     <div class="dialogue-box${alttext}">
-    <img src="/assets/roles/${getRoleString(role)}.png">
+    <img src="assets/roles/${getRoleString(role)}.png">
     <div class="detail">
     <h3>${talker}</h3>
     <span>${speech}</span>
