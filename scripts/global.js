@@ -1,4 +1,4 @@
-const JSON_URL = "/json/"
+const JSON_URL = "json/"
 let ROLES_JSON
 
 let DISPLAY
