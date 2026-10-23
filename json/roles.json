@@ -1,0 +1,36 @@
+{
+    "DOG": {
+        "display": "DOG",
+        "desc": "Beginnings.",
+        "available": true
+    },
+    "COOK": {
+        "display": "COOK",
+        "desc": "Maintains and provides food at the research facility.",
+        "available": true
+    },
+    "MECHANIC": {
+        "display": "MECHANIC",
+        "desc": "Maintains all the hardware around the research facility. Has access to ventilation and temperature.",
+        "available": true
+    },
+    "CREWMEMBER": {
+        "display": "CREWMEMBER",
+        "desc": "Miscalleanous player in the team.",
+        "available": true
+    },
+    "RADIOOPERATOR": {
+        "display": "RADIO OPERATOR",
+        "desc": "Access to distant communication.",
+        "available": true
+    },
+    "COMMANDER": {
+        "display": "COMMANDER",
+        "desc": "Leader of everyone in the research facility. Gives orders at the beginning of every day.",
+        "available": false
+    },
+    "DOGHANDLER": {
+        "display": "Dog Handler",
+        "desc": "Leader of everyone in the research facility. Gives orders at the beginning of every day."
+    }
+}

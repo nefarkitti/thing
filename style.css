@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+:root {
+    --accent: #de935f;
+}
+
+body {
+    margin: 0;
+    background: #0d0e0f;
+}
+
+* {
+    color: var(--accent);
+    font-family: "Roboto Mono", monospace;
+    image-rendering: pixelated;
+}
+
+main {
+    padding: 10px;
+    width: 40em;
+    min-height: 100dvh;
+    box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+}
+
+button {
+    cursor: pointer;
+    font-weight: 700;
+    user-select: none;
+}
+
+p {
+    font-weight: 600;
+}
+
+.people-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px 0px;
+
+    .person.alt {
+        flex-direction: row-reverse;
+        text-align: right;
+
+        span {
+            text-align: left;
+        }
+    }
+
+    .person.unavailable {
+        filter: opacity(50%);
+    }
+}
+
+.person,
+.dialogue-box {
+    user-select: none;
+    width: 100%;
+    display: flex;
+    border: 1px solid var(--accent);
+    gap: 0;
+
+    img {
+        min-width: 110px;
+        min-height: 80px;
+        max-width: 110px;
+        max-height: 80px;
+        box-sizing: border-box;
+        border: 1px solid var(--accent);
+    }
+
+    .detail {
+        box-sizing: border-box;
+        padding: 0px 5px;
+        display: flex;
+        flex-direction: column;
+
+        .roledesc {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        span {
+            padding-bottom: 5px;
+        }
+    }
+}
+
+.dialogue-box {
+    margin: 5px 0px;
+}
+
+.dialogue-box.alt {
+    flex-direction: row-reverse;
+    text-align: right;
+
+    span {
+        text-align: left;
+    }
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 5px 0px;
+
+    button {
+        width: fit-content;
+        flex-grow: 1;
+        background: var(--accent);
+        color: black;
+        border: 1px solid black;
+        padding: 5px 10px;
+    }
+
+    button:hover {
+        color: var(--accent);
+        background: black;
+        border: 1px solid var(--accent);
+    }
+}
+
+.options.disabled {
+    filter: opacity(50%);
+
+    button:hover {
+        background: var(--accent);
+        color: black;
+        border: 1px solid black;
+        cursor: unset;
+    }
+}
+
+@media (max-width: 640px) {
+    main {
+        width: 100%;
+    }
+}
