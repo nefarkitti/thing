@@ -13,6 +13,7 @@ body {
     color: var(--accent);
     font-family: "Roboto Mono", monospace;
     image-rendering: pixelated;
+    user-select: none;
 }
 
 main {
@@ -120,11 +121,29 @@ p {
         border: 1px solid black;
         padding: 5px 10px;
     }
+    
 
     button:hover {
         color: var(--accent);
         background: black;
         border: 1px solid var(--accent);
+    }
+
+    button.disabled {
+        filter: opacity(50%);
+        cursor: unset;
+    }
+    button.disabled:hover {
+        background: var(--accent);
+        border: 1px solid black;
+        color: black;
+    }
+}
+
+.options.listed {
+    flex-direction: column;
+    button {
+        width: unset;
     }
 }
 
@@ -137,6 +156,20 @@ p {
         border: 1px solid black;
         cursor: unset;
     }
+}
+
+.space-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+.location-desc {
+    font-size: 12px;
+    font-style: italic;
+}
+
+.error {
+    color: red;
 }
 
 @media (max-width: 640px) {

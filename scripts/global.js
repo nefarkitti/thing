@@ -7,11 +7,14 @@ let FIRST_NAMES
 let LAST_NAMES
 
 let DATA = {
+    actions: 12,
     seeintro: 0,
     seed: 0,
     day: 0,
+    travelling: "",
     host: "Dog",
     people: [],
+    events: [],
     assigned: {}
 }
 
@@ -22,6 +25,8 @@ const Status = {
     INFECTED: 1,
     DEAD: 2,
     MISSING: 3,
+    INJURED: 4,
+    JAILED: 5,
 }
 const Roles = {
     DOG: 0,
@@ -30,9 +35,11 @@ const Roles = {
     CREWMEMBER: 3,
     RADIOOPERATOR: 4,
     COMMANDER: 5,
-    DOGHANDLER: 6
+    DOGHANDLER: 6,
+    OTHERRESEARCHER: 7,
+    DOCTOR: 8,
 }
-const RequiredRoles = ["COMMANDER", "RADIOOPERATOR", "MECHANIC", "COOK", "DOGHANDLER", "CREWMEMBER"]
+const RequiredRoles = ["COMMANDER", "RADIOOPERATOR", "MECHANIC", "COOK", "DOGHANDLER", "CREWMEMBER", "DOCTOR"]
 
 class Person {
     constructor(name, role, status, awareness = 0, suspicion = {}, goals = [], loc = "kennel", order = "") {
@@ -44,6 +51,7 @@ class Person {
         this.goals = []
         this.location = loc
         this.order = order
+        this.idle = 0
     }
 }
 
@@ -67,10 +75,20 @@ function findPerson(name) {
     }
     return found
 }
-function getListOf(status){
+function getListOf(status) {
     let l = []
-    DATA.people.forEach(person=>{
-        if (person.status == status || (status == Status.ALIVE && person.status == Status.INFECTED)) {
+    DATA.people.forEach(person => {
+        if (person.status == status) {
+            l.push(person.name)
+        }
+    })
+    return l
+}
+function getAliveSum() {
+    let alive = [Status.ALIVE, Status.INJURED, Status.JAILED, Status.INFECTED]
+    let l = []
+    DATA.people.forEach(person => {
+        if (alive.includes(person.status)) {
             l.push(person.name)
         }
     })
@@ -108,6 +126,7 @@ function listPeople(all = false) {
         if (o % 2 == 0) p.classList.add("alt");
 
         let portrait = document.createElement("img")
+        portrait.src = `assets/roles/${stringRole}.png`
         p.appendChild(portrait)
 
         let detail = document.createElement("div")
@@ -147,30 +166,55 @@ function displayDialogue(talker, speech, alt = false, role) {
     </div>
     `
 }
-
+function displayPerson(who, alt = false) {
+    let alttext = ""
+    if (alt) alttext = " alt";
+    DISPLAY.innerHTML += `
+    <div class="dialogue-box${alttext}">
+    <img src="assets/roles/${getRoleString(who.role)}.png">
+    <div class="detail">
+    <h3>${who.name}</h3>
+    <h5>Role: ${getRoleString(who.role)}</h5>
+    <span class="roledesc">${ROLES_JSON[getRoleString(who.role)].desc}</span>
+    </div>
+    </div>
+    `
+}
 function addSuspicion(to, who, by) {
-
     if (who.name in to.sus) {
         to.sus[who.name] += by
     } else {
         to.sus[who.name] = by
     }
-
+    saveState()
+}
+function addAwareness(to, by) {
+    to.awa += by
+    saveState()
 }
 async function init() {
+    let d = document.getElementById("display")
     try {
-        const firstnames = await axios.get(`${JSON_URL}names-first.json`);
+        d.innerHTML += `<div>loading names</div>`
+        const firstnames = await axios.get(`${JSON_URL}names-firsts.json`);
         const lastnames = await axios.get(`${JSON_URL}names-last.json`);
+        d.innerHTML += `<div>names loaded successfully</div>`
+        d.innerHTML += `<div>loading roles</div>`
         const roles = await axios.get(`${JSON_URL}roles.json`)
+        d.innerHTML += `<div>roles loaded successfully</div>`
 
         FIRST_NAMES = firstnames.data
         LAST_NAMES = lastnames.data
         ROLES_JSON = roles.data
 
+        d.innerHTML += `<div>loading save</div>`
+
         if (loadState() == true) {
+            d.innerHTML += `<div>existing save loaded</div>`
             console.log("save exists, starting from last point")
             dataready = true
         } else {
+            console.log("save doesnt exist!")
             DATA.people.push(
                 new Person("Dog", Roles.DOG, Status.INFECTED)
             )
@@ -187,9 +231,22 @@ async function init() {
         }
 
     } catch (e) {
+        d.innerHTML += `<div class="error">loading failed, dumping cause</div>`
+        var aux = e.stack.split("\n"); //removing the line that we force to generate the error (var err = new Error();) from the message
+        let final = []
+        aux.forEach(line => {
+            if (line.startsWith("@http")) {
+                final.push(line)
+            }
+        })
+
+        d.innerHTML += `<div class="error">${e}</div>`
+        d.innerHTML += `<div class="error">${final.join(" ")}</div>`
         console.error(e)
     }
 }
+
+
 Array.prototype.random = function () {
     return this[Math.floor((Math.random() * this.length))];
 }
@@ -215,5 +272,25 @@ function resetData() {
     saveState()
     location.reload()
 }
+window.addEventListener('load', function () {
+    console.log("window loaded")
 
-init()
+    function displayError(t) {
+        console.log("hey")
+        document.getElementById("display").innerHTML += `<div class="error">${t}</div>`
+    }
+    addEventListener('error', ({ error }) => {
+        console.warn(`Uncaught global error "${error?.stack}"`);
+        displayError(`Uncaught global error "${error?.stack}"`)
+    });
+    addEventListener('unhandledrejection', event => {
+
+        let getFile = event.reason.fileName.split("/").splice(-2, 2).join("/")
+        let getLn = event.reason.lineNumber
+
+        console.warn(`Unhandled promise rejection "${event.reason}"`);
+        displayError(`Unhandled promise rejection "${event.reason}" - ${getFile}:${getLn}`)
+    });
+
+    init()
+})

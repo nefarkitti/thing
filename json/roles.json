@@ -1,36 +1,78 @@
 {
     "DOG": {
         "display": "DOG",
-        "desc": "Beginnings.",
-        "available": true
+        "desc": "Simple beginnings. Some way you're going to have to get out of this cage.",
+        "routines": {
+            "wake": [
+                ["kennel"]
+            ]
+        }
     },
     "COOK": {
         "display": "COOK",
         "desc": "Maintains and provides food at the research facility.",
-        "available": true
+        "routines": {
+            "wake": [
+                ["sleepquarters", "midhall", "kitchen", "midhall", "messhall", "midhall", "kitchen"]
+            ]
+        }
     },
     "MECHANIC": {
         "display": "MECHANIC",
         "desc": "Maintains all the hardware around the research facility. Has access to ventilation and temperature.",
-        "available": true
+        "routines": {
+            "wake": [
+                ["sleepquarters", "midhall", "messhall", "midhall", "lefthall", "manageroffice"]
+            ]
+        }
     },
     "CREWMEMBER": {
         "display": "CREWMEMBER",
         "desc": "Miscalleanous player in the team.",
-        "available": true
+        "routines": {
+            "wake": [
+                ["sleepquarters", "midhall", "messhall", "midhall", "righthall", "greenhouse", "laundry"],
+                ["sleepquarters", "midhall", "messhall", "midhall", "lefthall", "supply1", "lefthall", "manageroffice"],
+                ["sleepquarters", "midhall", "messhall", "midhall", "righthall", "supply2", "righthall", "midhall", "lefthall", "manageroffice"]
+            ]
+        }
     },
     "RADIOOPERATOR": {
         "display": "RADIO OPERATOR",
         "desc": "Access to distant communication.",
-        "available": true
+        "routines": {
+            "wake": [
+                ["sleepquarters", "midhall", "messhall", "midhall", "righthall", "radioroom"],
+                ["sleepquarters", "midhall", "messhall", "midhall", "lefthall", "manageroffice"]
+            ]
+        }
     },
     "COMMANDER": {
         "display": "COMMANDER",
         "desc": "Leader of everyone in the research facility. Gives orders at the beginning of every day.",
-        "available": false
+        "routines": {
+            "wake": [
+                ["sleepquarters", "midhall", "messhall", "midhall", "lefthall", "manageroffice"]
+            ]
+        }
+    },
+    "DOCTOR": {
+        "display": "Doctor",
+        "desc": "Knows the basics of treatment to help people. Dangerous.",
+        "routines": {
+            "wake": [
+                ["sleepquarters", "midhall", "messhall", "midhall", "infirmary"]
+            ]
+        }
     },
     "DOGHANDLER": {
-        "display": "Dog Handler",
-        "desc": "Leader of everyone in the research facility. Gives orders at the beginning of every day."
+        "display": "DOG HANDLER",
+        "desc": "Handles all the dogs that are used for sledding when traversing outside of the research facility.",
+        "routines": {
+            "wake": [
+                ["sleepquarters"]
+            ]
+        }
     }
 }
+

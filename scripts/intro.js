@@ -6,7 +6,25 @@ async function intro() {
 
     DISPLAY.innerHTML = ""
 
-    displayDialogue("???", 'Älä päästä tuota koiraa laboratorioon!')
+    DISPLAY.innerHTML = `
+    <p>
+    Unidentified Extraterrestial Parasite v1.0.0
+    </p>
+    I turned John Carpenter's "The Thing" into a browser game. <br>
+    I don't own the concept. Nor will I ever claim to. <br>
+    This was just a fun thing to make for halloween. <br>
+    Play as the elusive Unidentified Extraterrestial Parasite (or U.E.P.!),
+    which has the mission of spreading itself across all humanity. But before you can do that,
+    you have to get out of the South Greenland ARCANA Research Facility first!
+    <hr>
+    <hr style="filter:opacity(0%)">
+    `
+
+    await buttonOptions(['PLAY'])
+
+    DISPLAY.innerHTML = ""
+
+    displayDialogue("???", 'Älä päästä tuota koiraa laboratorioon!', false, Roles.OTHERRESEARCHER)
 
     await buttonOptions(['Run'])
 
@@ -14,7 +32,7 @@ async function intro() {
 
     await buttonOptions(['Run'])
 
-    displayDialogue("???", "Mä sanoin, että älä päästä tuota juttua laboratorioon!")
+    displayDialogue("???", "Mä sanoin, että älä päästä tuota juttua laboratorioon!", false, Roles.OTHERRESEARCHER)
 
     await buttonOptions(['Run'])
 
@@ -63,6 +81,8 @@ async function intro() {
 
     displayDialogue(DATA.assigned.COMMANDER, "Take this thing to the kennel with the rest of em right now!", true, Roles.COMMANDER)
 
+    await buttonOptions(['...'])
+
     DISPLAY.innerHTML = ``
 
     displayAdd(`The cage door shuts into place and ${DATA.assigned.DOGHANDLER} locks the padlock.`)
@@ -75,16 +95,21 @@ async function intro() {
 
     await buttonOptions(['...'])
 
-    displayDialogue(DATA.assigned.COMMANDER, 
+    displayDialogue(DATA.assigned.COMMANDER,
         `It could be useful for any future sleddin'. We'll keep it here for now to make sure it's not diseased or somethin'.`,
-    true, Roles.COMMANDER)
+        true, Roles.COMMANDER)
 
     //
 
+    await buttonOptions(['Begin.'])
+
     DATA.seeintro = 1
     DATA.day++
-
-    await buttonOptions(['Begin.'])
+    DATA.people.forEach(person=>{
+        if (person.role == Roles.DOG) return;
+        person.location = "manageroffice"
+    })
+    findPerson(DATA.assigned.DOGHANDLER).location = "kennel"
 
     saveState()
 
